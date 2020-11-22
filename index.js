@@ -26,6 +26,8 @@ async function main() {
   // use existing site
   const pages = await browser.pages();
   const page = pages[0];
+  page.setDefaultTimeout(0);
+  page.setDefaultNavigationTimeout(0);
 
   const video = await getLatestVideo();
 
