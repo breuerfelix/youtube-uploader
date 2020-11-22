@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 
-const endpoint = 'http://localhost:8080'
+const endpoint = 'http://mc.felixbreuer.me:8123'
 axios.defaults.baseURL = endpoint;
 
 async function downloadFile(url, outputFile) {
