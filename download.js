@@ -48,9 +48,9 @@ async function getLatestVideo() {
 
   if (fs.existsSync(latestFileName)) {
     fs.unlinkSync(latestFileName);
-    fs.writeFileSync(latestFileName, ident);
   }
 
+  fs.writeFileSync(latestFileName, ident);
   console.log('finished downloading!');
 
   return {
