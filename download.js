@@ -37,6 +37,7 @@ async function getLatestVideo() {
     }
   }
 
+  console.log('found new video ! downloading...');
   // fetch video data
   const videoDataRes = await axios.get(`${ident}/data.json`);
   const videoData = videoDataRes.data;
@@ -49,6 +50,8 @@ async function getLatestVideo() {
     fs.unlinkSync(latestFileName);
     fs.writeFileSync(latestFileName, ident);
   }
+
+  console.log('finished downloading!');
 
   return {
     data: videoData,

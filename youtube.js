@@ -2,6 +2,7 @@ import {delay, goto} from './utils.js';
 
 async function upload(page, file) {
   await goto(page, 'https://studio.youtube.com');
+  console.log('navigation done to youtube studio');
   await delay(30);
   await page.click('#create-icon');
   await delay(10);
