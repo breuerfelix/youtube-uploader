@@ -3,8 +3,10 @@ import {delay, goto} from './utils.js';
 async function upload(page, file) {
   await goto(page, 'https://studio.youtube.com');
   console.log('navigation done to youtube studio');
-  await delay(10);
+  await delay(20);
+  console.log('before clicking create');
   await page.click('#create-icon');
+  console.log('after clicking create');
   await delay(5);
   await page.click('#text-item-0');
   await delay(5);
