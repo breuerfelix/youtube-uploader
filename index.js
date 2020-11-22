@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer';
 import {uploadVideo} from './youtube.js';
 import {getLatestVideo} from './download.js';
+import {delay} from './utils.js';
 
 // browser endpoint as first parameter
 const args = process.argv.slice(2);
@@ -26,6 +27,11 @@ async function main() {
   // use existing site
   const pages = await browser.pages();
   const page = pages[0];
+
+  // reload to close modal
+  await page.reload();
+  await delay(60);
+
   page.setDefaultTimeout(60000);
   page.setDefaultNavigationTimeout(60000);
 
@@ -35,6 +41,12 @@ async function main() {
     const { data, file } = video;
     console.log('uploading video: ' + data.title);
     await uploadVideo(page, data, file);
+    console.log('finished uploading! going to sleep now');
+
+    // shorter time to close the modal
+    // modal consumes a lot of cpu
+    setTimeout(main, 1200 * 1000);
+    return;
   }
 
   console.log('going to sleep');
