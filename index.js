@@ -28,12 +28,12 @@ async function main() {
   const pages = await browser.pages();
   const page = pages[0];
 
-  // reload to close modal
-  await page.reload();
-  await delay(60);
-
   page.setDefaultTimeout(60000);
   page.setDefaultNavigationTimeout(60000);
+
+  // reload to close modal
+  await page.reload();
+  await delay(30);
 
   const video = await getLatestVideo();
 
