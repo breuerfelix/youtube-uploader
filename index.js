@@ -11,7 +11,7 @@ if (args.length < 1) {
 
 const browserWSEndpoint = args[0];
 // default is 60 minutes
-const interval = (Number(args[1]) || 3600) * 1000;
+const interval = (Number(args[1]) || 7200) * 1000;
 
 async function main() {
   console.log('running');
