@@ -45,6 +45,11 @@ async function getLatestVideo() {
   const videoPath = 'video.mp4';
   await downloadFile(`${ident}/merged.mp4`, videoPath);
 
+  if (fs.existsSync(latestFileName)) {
+    fs.unlinkSync(latestFileName);
+    fs.writeFileSync(latestFileName, ident);
+  }
+
   return {
     data: videoData,
     file: videoPath,
