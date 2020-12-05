@@ -5,12 +5,14 @@ import {delay} from './utils.js';
 
 // browser endpoint as first parameter
 const args = process.argv.slice(2);
-if (args.length < 1) {
+if (args.length < 2) {
   console.error('not enough arguments provided.');
   process.exit(0);
 }
 
 const browserWSEndpoint = args[0];
+const videoEndpoint = args[1];
+
 // default is 60 minutes
 const interval = (Number(args[1]) || 7200) * 1000;
 
@@ -28,14 +30,21 @@ async function main() {
   const pages = await browser.pages();
   const page = pages[0];
 
-  page.setDefaultTimeout(60000);
-  page.setDefaultNavigationTimeout(60000);
+  page.setDefaultTimeout(60 * 1000);
+  page.setDefaultNavigationTimeout(60 * 1000);
 
   // reload to close modal
   await page.reload();
   await delay(30);
 
-  const video = await getLatestVideo();
+  let video = null;
+
+  try {
+    video = await getLatestVideo(videoEndpoint);
+  } catch(e) {
+    console.error('error downloading new video', e);
+    video = null;
+  }
 
   if (video != null) {
     const { data, file } = video;

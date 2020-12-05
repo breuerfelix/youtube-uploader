@@ -1,9 +1,6 @@
 import axios from 'axios';
 import fs from 'fs';
 
-const endpoint = 'http://mc.felixbreuer.me:8123'
-axios.defaults.baseURL = endpoint;
-
 async function downloadFile(url, outputFile) {
   // delete file if already exists
   if (fs.existsSync(outputFile)) {
@@ -22,7 +19,9 @@ async function downloadFile(url, outputFile) {
   })
 }
 
-async function getLatestVideo() {
+async function getLatestVideo(endpoint) {
+  axios.defaults.baseURL = endpoint;
+
   const res = await axios.get('/latest.txt');
   const ident = res.data;
 
