@@ -16,7 +16,6 @@ async function auto(videoEndpoint) {
 
   if (video != null) {
     const { file, data } = video;
-    console.log(file, data);
     await upload(file, data);
   }
 
