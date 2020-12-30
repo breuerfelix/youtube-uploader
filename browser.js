@@ -1,5 +1,6 @@
 import got from 'got';
 import {spawn} from 'child_process';
+import {delay} from './utils.js';
 
 const debuggingPort = 9222;
 const profileFolder = 'chrome-profile';
@@ -22,9 +23,19 @@ async function launchBrowser(headless = false) {
 
   const proc = spawn(executeable, launchArgs);
 
-  const res = await got(`http://localhost:${debuggingPort}/json/version`).json();
-  const browserWSEndpoint = res.webSocketDebuggerUrl;
-  return {browserWSEndpoint, pid: proc.pid};
+  let retry = 0;
+  while (true) {
+    try {
+      const res = await got(`http://localhost:${debuggingPort}/json/version`).json();
+      const browserWSEndpoint = res.webSocketDebuggerUrl;
+      return {browserWSEndpoint, pid: proc.pid};
+    } catch (e) {
+      if (retry > 50) throw e;
+
+      retry++;
+      await delay(1);
+    }
+  }
 }
 
 export {
