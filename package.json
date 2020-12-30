@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.0",
-    "puppeteer": "^5.3.1"
+    "axios": "^0.21.1",
+    "got": "^11.8.1",
+    "puppeteer": "^5.3.1",
+    "tree-kill": "^1.2.2"
   }
 }

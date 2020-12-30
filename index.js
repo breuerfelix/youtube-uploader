@@ -1,66 +1,9 @@
-import puppeteer from 'puppeteer';
-import {uploadVideo} from './youtube.js';
+import {launchBrowser} from './browser.js';
+import {upload} from './upload.js';
 import {getLatestVideo} from './download.js';
-import {delay} from './utils.js';
 
-// browser endpoint as first parameter
-const args = process.argv.slice(2);
-if (args.length < 2) {
-  console.error('not enough arguments provided.');
-  process.exit(0);
-}
-
-const browserWSEndpoint = args[0];
-const videoEndpoint = args[1];
-
-// default is 60 minutes
-const interval = (Number(args[1]) || 7200) * 1000;
-
-async function main() {
-  console.log('running');
-  const browser = await puppeteer.connect({
-    browserWSEndpoint,
-    // scale viewport to current windows size
-    defaultViewport: null,
-  });
-
-  // create new page
-  //const page = await browser.newPage();
-  // use existing site
-  const pages = await browser.pages();
-  const page = pages[0];
-
-  page.setDefaultTimeout(60 * 1000);
-  page.setDefaultNavigationTimeout(60 * 1000);
-
-  // reload to close modal
-  await page.reload();
-  await delay(30);
-
-  let video = null;
-
-  try {
-    video = await getLatestVideo(videoEndpoint);
-  } catch(e) {
-    console.error('error downloading new video', e);
-    video = null;
-  }
-
-  if (video != null) {
-    const { data, file } = video;
-    console.log('uploading video: ' + data.title);
-    await uploadVideo(page, data, file);
-    console.log('finished uploading! going to sleep now');
-
-    // shorter time to close the modal
-    // modal consumes a lot of cpu
-    setTimeout(main, 1200 * 1000);
-    return;
-  }
-
-  console.log('going to sleep');
-  // reschedule
-  setTimeout(main, interval);
-}
-
-main();
+export {
+  launchBrowser,
+  upload,
+  getLatestVideo,
+};

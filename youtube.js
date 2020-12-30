@@ -2,11 +2,11 @@ import {delay, goto} from './utils.js';
 
 async function upload(page, file) {
   await goto(page, 'https://studio.youtube.com');
-  await delay(30);
-  await page.click('#create-icon');
+  await delay(20);
+
+  await page.click('#upload-icon');
   await delay(5);
-  await page.click('#text-item-0');
-  await delay(5);
+
   const fileInput = await page.$('input[type=file]');
   await fileInput.uploadFile(file);
   await delay(10);
@@ -64,6 +64,20 @@ async function done(modal) {
   await delay(5);
 }
 
+async function waitForUpload(page) {
+  await delay(10);
+
+  while (true) {
+    const html = await page.content();
+    if (!html.includes('Video uploading')) break;
+
+    await delay(5);
+  }
+
+  await delay(5);
+  console.log('Video upload finished.');
+}
+
 async function uploadVideo(page, data, file) {
   await upload(page, file);
 
@@ -88,6 +102,7 @@ async function uploadVideo(page, data, file) {
   await clickPublic(modal);
 
   await done(modal);
+  await waitForUpload(page);
 }
 
 export {

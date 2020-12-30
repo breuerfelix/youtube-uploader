@@ -41,6 +41,14 @@ async function getLatestVideo(endpoint) {
   const videoDataRes = await axios.get(`${ident}/data.json`);
   const videoData = videoDataRes.data;
 
+  const dataFileName = 'data.json';
+
+  if (fs.existsSync(dataFileName)) {
+    fs.unlinkSync(dataFileName);
+  }
+
+  fs.writeFileSync(dataFileName, JSON.stringify(videoData));
+
   // fetch video
   const videoPath = 'video.mp4';
   await downloadFile(`${ident}/merged.mp4`, videoPath);
@@ -53,7 +61,7 @@ async function getLatestVideo(endpoint) {
   console.log('finished downloading!');
 
   return {
-    data: videoData,
+    data: dataFileName,
     file: videoPath,
   };
 }
