@@ -3,3 +3,4 @@ package-lock.json
 chrome-profile
 *.mp4
 *.txt
+data.json
