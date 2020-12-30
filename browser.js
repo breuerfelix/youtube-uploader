@@ -3,7 +3,7 @@ import {spawn} from 'child_process';
 
 const debuggingPort = 9222;
 const profileFolder = 'chrome-profile';
-const executeable = 'google-chrome-stable';
+const executeable = process.env.BROWSER || 'google-chrome-stable';
 
 async function launchBrowser(headless = false) {
   const launchArgs = [
