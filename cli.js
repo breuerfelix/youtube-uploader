@@ -30,15 +30,18 @@ switch (args[0]) {
     console.log('Please login to your YouTube Account.');
     // TODO headless does not open youtube when logged in to google
     launchBrowser(false);
+    break;
 
   case 'upload':
     console.log('Uploading video ...');
     const videoPath = args[1];
     const dataPath = args[2];
     upload(videoPath, dataPath);
+    break;
 
   case 'th':
     console.log('Uploading video ...');
     const videoEndpoint = args[1];
     auto(videoEndpoint);
+    break;
 }
